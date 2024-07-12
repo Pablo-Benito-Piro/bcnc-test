@@ -15,14 +15,6 @@ class PhotoService {
     @Value("\${json.placeholder.url.photos}")
     lateinit var urlphotos: String
 
-    fun getPhotoByAlbum( albumId: Int): List<Photo> {
-        val photos = restTemplate.getForObject(
-            "$urlphotos?albumId=$albumId",
-            Array<Photo>::class.java
-        )
-        return photos?.toList() ?: Collections.emptyList()
-    }
-
     fun getPhotos(): List<Photo> {
         val photos = restTemplate.getForObject(
             "$urlphotos",
@@ -31,11 +23,23 @@ class PhotoService {
         return photos?.toList() ?: Collections.emptyList()
     }
 
-    fun getPhotoById(id: Int): Photo {
+    fun getPhotoByAlbum(albumId: String): List<Photo> {
         val photos = restTemplate.getForObject(
-            "$urlphotos/$id",
-            Photo::class.java
+            "$urlphotos?albumId=$albumId",
+            Array<Photo>::class.java
         )
-        return photos
+        return photos?.toList() ?: Collections.emptyList()
+    }
+
+    fun getPhotoById(id: String): Photo? {
+        try {
+            val photos = restTemplate.getForObject(
+                "$urlphotos/$id",
+                Photo::class.java
+            )
+            return photos
+        } catch (ex: Exception) {
+            return null
+        }
     }
 }
