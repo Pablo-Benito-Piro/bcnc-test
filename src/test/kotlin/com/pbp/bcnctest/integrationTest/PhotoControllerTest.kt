@@ -66,7 +66,7 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
         Mockito.`when`(photoService.getPhotoByAlbum("1")).thenReturn(listOf(photo))
 
         val result =
-            mockMvc.perform(MockMvcRequestBuilders.get("/photo?albumId=1")).andExpect(status().isOk).andExpect(
+            mockMvc.perform(MockMvcRequestBuilders.get("/photo/album/1")).andExpect(status().isOk).andExpect(
                 content().contentType(MediaType.APPLICATION_JSON)
             ).andReturn().response.contentAsString
 
@@ -78,6 +78,6 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun getPhotoWithAlbumIdStatus404() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/photo?albumId=aaa")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/photo/album/aaa")).andExpect(status().isNotFound)
     }
 }

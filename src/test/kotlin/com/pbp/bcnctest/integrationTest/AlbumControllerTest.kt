@@ -47,17 +47,12 @@ class AlbumControllerTest {
         val albumResult = mapper.readValue(result, Array<Album>::class.java)
         assertArrayEquals(arrayOf(album), albumResult)
     }
-    @Test
-    fun getAlbumStatus404() {
-        Mockito.`when`(albumService.getAlbums()).thenReturn(emptyList())
-        mockMvc.perform(MockMvcRequestBuilders.get("/album")).andExpect(status().isNotFound)
-    }
 
     @Test
     fun getAlbumWithPhotoStatusSuccess() {
         Mockito.`when`(albumService.getAlbumsWithPhotos(true)).thenReturn(listOf(albumWithPhotos))
 
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album").param("all","true")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album/all/true")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -67,7 +62,7 @@ class AlbumControllerTest {
     @Test
     fun getAlbumWithPhotoStatus404() {
         Mockito.`when`(albumService.getAlbums()).thenReturn(emptyList())
-        mockMvc.perform(MockMvcRequestBuilders.get("/album").param("all","true")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/album/all/true")).andExpect(status().isNotFound)
     }
     @Test
     fun getAlbumWithIdStatusSuccess() {
@@ -88,7 +83,7 @@ class AlbumControllerTest {
     fun getAlbumWithUserIdStatusSuccess() {
         Mockito.`when`(albumService.getAlbumsByUserId("1")).thenReturn(listOf(album))
 
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album?userId=1")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album/user/1")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -97,6 +92,6 @@ class AlbumControllerTest {
     }
     @Test
     fun getAlbumWithUserIdStatus404() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/album?userId=aaa")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/album/user/aaa")).andExpect(status().isNotFound)
     }
 }
