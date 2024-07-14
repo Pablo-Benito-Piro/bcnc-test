@@ -4,7 +4,6 @@ import com.pbp.bcnctest.models.Album
 import com.pbp.bcnctest.models.Photo
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
@@ -27,15 +26,15 @@ class AlbumService {
     fun getAlbumsWithPhotos(all: Boolean): List<Album> {
         val albums = restTemplate.getForObject(urlAlbum, Array<Album>::class.java)
         if (all) {
-            for (album in albums) {
+            for (album in albums!!) {
                 val albumWithPhotos = restTemplate.getForObject(
                     urlAlbumWithPhotos + "?albumId=${album.id}",
                     Array<Photo>::class.java
                 )
-                albumWithPhotos.toList().also { album.photos = it }
+                albumWithPhotos?.toList()?.also { album.photos = it }
 
             }
-            return albums?.toList() ?: Collections.emptyList()
+            return albums.toList() 
         }
         return albums?.toList() ?: Collections.emptyList()
     }
@@ -47,8 +46,8 @@ class AlbumService {
 
     fun getAlbumById(id: String): Album? {
         try {
-            val albums = restTemplate.getForObject("$urlAlbum/$id", Album::class.java)
-            return albums
+            val album = restTemplate.getForObject("$urlAlbum/$id", Album::class.java)
+            return album
 
         } catch (ex: Exception) {
             return null

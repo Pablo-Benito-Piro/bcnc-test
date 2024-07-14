@@ -37,9 +37,10 @@ class AlbumControllerTest {
 
     @Test
     fun getAlbumStatusSuccess() {
+        //when
         Mockito.`when`(albumService.getAlbums()).thenReturn(listOf(album))
 
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/albums")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -49,14 +50,14 @@ class AlbumControllerTest {
     @Test
     fun getAlbumStatus404() {
         Mockito.`when`(albumService.getAlbums()).thenReturn(emptyList())
-        mockMvc.perform(MockMvcRequestBuilders.get("/albums")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/album")).andExpect(status().isNotFound)
     }
 
     @Test
     fun getAlbumWithPhotoStatusSuccess() {
         Mockito.`when`(albumService.getAlbumsWithPhotos(true)).thenReturn(listOf(albumWithPhotos))
 
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/albums").param("all","true")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album").param("all","true")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -66,13 +67,13 @@ class AlbumControllerTest {
     @Test
     fun getAlbumWithPhotoStatus404() {
         Mockito.`when`(albumService.getAlbums()).thenReturn(emptyList())
-        mockMvc.perform(MockMvcRequestBuilders.get("/albums").param("all","true")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/album").param("all","true")).andExpect(status().isNotFound)
     }
     @Test
     fun getAlbumWithIdStatusSuccess() {
         Mockito.`when`(albumService.getAlbumById("1")).thenReturn(album)
 
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/albums/1")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album/1")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -81,13 +82,13 @@ class AlbumControllerTest {
     }
     @Test
     fun getAlbumWithIdStatus404() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/albums/aaa")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/album/aaa")).andExpect(status().isNotFound)
     }
     @Test
     fun getAlbumWithUserIdStatusSuccess() {
         Mockito.`when`(albumService.getAlbumsByUserId("1")).thenReturn(listOf(album))
 
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/albums?userId=1")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/album?userId=1")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -96,6 +97,6 @@ class AlbumControllerTest {
     }
     @Test
     fun getAlbumWithUserIdStatus404() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/albums?userId=aaa")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/album?userId=aaa")).andExpect(status().isNotFound)
     }
 }

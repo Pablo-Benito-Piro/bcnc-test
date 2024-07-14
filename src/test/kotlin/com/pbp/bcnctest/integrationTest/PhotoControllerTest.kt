@@ -34,7 +34,7 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
     fun getPhotoStatusSuccess() {
         Mockito.`when`(photoService.getPhotos()).thenReturn(listOf(photo))
 
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/photos")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/photo")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -47,7 +47,7 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
     fun getPhotoWithIdStatusSuccess() {
         Mockito.`when`(photoService.getPhotoById("1")).thenReturn(photo)
 
-        var result = mockMvc.perform(MockMvcRequestBuilders.get("/photos/1")).andExpect(status().isOk).andExpect(
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/photo/1")).andExpect(status().isOk).andExpect(
             content().contentType(MediaType.APPLICATION_JSON)
         ).andReturn().response.contentAsString
 
@@ -58,15 +58,15 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun getPhotoWithIdStatus404() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/photos/aaa")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/photo/aaa")).andExpect(status().isNotFound)
     }
 
     @Test
     fun getPhotoWithAlbumIdStatusSuccess() {
         Mockito.`when`(photoService.getPhotoByAlbum("1")).thenReturn(listOf(photo))
 
-        var result =
-            mockMvc.perform(MockMvcRequestBuilders.get("/photos?albumId=1")).andExpect(status().isOk).andExpect(
+        val result =
+            mockMvc.perform(MockMvcRequestBuilders.get("/photo?albumId=1")).andExpect(status().isOk).andExpect(
                 content().contentType(MediaType.APPLICATION_JSON)
             ).andReturn().response.contentAsString
 
@@ -78,6 +78,6 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun getPhotoWithAlbumIdStatus404() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/photos?albumId=aaa")).andExpect(status().isNotFound)
+        mockMvc.perform(MockMvcRequestBuilders.get("/photo?albumId=aaa")).andExpect(status().isNotFound)
     }
 }

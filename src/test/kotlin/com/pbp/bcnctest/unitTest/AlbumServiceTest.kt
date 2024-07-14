@@ -18,7 +18,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbum_thenReturnAlbum() {
         //when
-        val result = albumService.getAlbums();
+        val result = albumService.getAlbums()
         //then
         assertThat(result[0]).isExactlyInstanceOf(Album::class.java)
     }
@@ -26,7 +26,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbumWithPhotoTrue_thenReturnAlbumWithPhotos() {
         //when
-        val result = albumService.getAlbumsWithPhotos(true);
+        val result = albumService.getAlbumsWithPhotos(true)
         //then
         assertThat(result[0]).isExactlyInstanceOf(Album::class.java)
     }
@@ -34,7 +34,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbumWithPhotoFalse_thenReturnAlbumWithPhotos() {
         //when
-        val result = albumService.getAlbumsWithPhotos(false);
+        val result = albumService.getAlbumsWithPhotos(false)
         //then
         assertThat(result[0]).isExactlyInstanceOf(Album::class.java)
     }
@@ -42,7 +42,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbumWithId_thenReturnAlbum() {
         //when
-        val result = albumService.getAlbumById("1");
+        val result = albumService.getAlbumById("1")
         //then
         assertThat(result).isExactlyInstanceOf(Album::class.java)
     }
@@ -50,7 +50,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbumWithId_thenNull() {
         //when
-        val result = albumService.getAlbumById("not id");
+        val result = albumService.getAlbumById("not id")
         //then
         assertEquals(result, null)
     }
@@ -58,7 +58,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbumWithUserId_thenReturnAlbum() {
         //when
-        val result = albumService.getAlbumsByUserId("1");
+        val result = albumService.getAlbumsByUserId("1")
         //then
         assertThat(result[0]).isExactlyInstanceOf(Album::class.java)
     }
@@ -66,7 +66,7 @@ class AlbumServiceTest {
     @Test
     fun whenGetAlbumWithUserId_thenNull() {
         //when
-        val result = albumService.getAlbumById("not id");
+        val result = albumService.getAlbumById("not id")
         //then
         assertEquals(result, null)
     }
