@@ -23,6 +23,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("io.mockk:mockk:1.10.4")
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
+    testImplementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
+
 }
 
 tasks.withType<KotlinCompile> {
