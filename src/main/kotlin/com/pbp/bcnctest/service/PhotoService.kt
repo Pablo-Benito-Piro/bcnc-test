@@ -3,6 +3,7 @@ package com.pbp.bcnctest.service
 import com.pbp.bcnctest.models.Photo
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.util.*
 
@@ -37,7 +38,7 @@ class PhotoService {
                 Photo::class.java
             )
             return photo
-        } catch (ex: Exception) {
+        } catch (ex: HttpClientErrorException) {
             return null
         }
     }

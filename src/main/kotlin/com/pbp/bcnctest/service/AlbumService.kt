@@ -4,7 +4,9 @@ import com.pbp.bcnctest.models.Album
 import com.pbp.bcnctest.models.Photo
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.util.*
 
 @Service
@@ -24,19 +26,22 @@ class AlbumService {
     }
 
     fun getAlbumsWithPhotos(all: Boolean): List<Album> {
-        val albums = restTemplate.getForObject(urlAlbum, Array<Album>::class.java)
-        if (all) {
-            for (album in albums!!) {
-                val albumWithPhotos = restTemplate.getForObject(
-                    urlAlbumWithPhotos + "?albumId=${album.id}",
-                    Array<Photo>::class.java
-                )
-                albumWithPhotos?.toList()?.also { album.photos = it }
-
+        try {
+            val albums = restTemplate.getForObject(urlAlbum, Array<Album>::class.java)
+            if (all) {
+                for (album in albums!!) {
+                    val albumWithPhotos = restTemplate.getForObject(
+                        urlAlbumWithPhotos + "?albumId=${album.id}",
+                        Array<Photo>::class.java
+                    )
+                    albumWithPhotos?.toList()?.also { album.photos = it }
+                }
+                return albums.toList()
             }
-            return albums.toList() 
+            return albums?.toList() ?: Collections.emptyList()
+        } catch (ex: MethodArgumentTypeMismatchException) {
+            return Collections.emptyList()
         }
-        return albums?.toList() ?: Collections.emptyList()
     }
 
     fun getAlbumsByUserId(userId: String): List<Album> {
@@ -49,7 +54,7 @@ class AlbumService {
             val album = restTemplate.getForObject("$urlAlbum/$id", Album::class.java)
             return album
 
-        } catch (ex: Exception) {
+        } catch (ex: HttpClientErrorException) {
             return null
         }
 

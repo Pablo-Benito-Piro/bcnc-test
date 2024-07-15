@@ -20,23 +20,28 @@ class AlbumController {
 
     @Operation(summary = "Get all albums")
     @GetMapping()
-    fun getAlbums():  List<Album> {
+    fun getAlbums(): List<Album> {
         val albums = albumService.getAlbums()
         return albums
     }
 
     @Operation(summary = "Get all albums with photos")
     @GetMapping(value = ["/all/{all}"])
-    fun getAlbumsWithPhotos(@PathVariable all: Boolean):  ResponseEntity<Any> {
-        val albums =albumService.getAlbumsWithPhotos(all)
-        if (albums.isEmpty()) return ResponseEntity("No albums found", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(albums)
+    fun getAlbumsWithPhotos(@PathVariable all: String): ResponseEntity<Any> {
+        try {
+            val albums = albumService.getAlbumsWithPhotos(all.toBooleanStrict())
+            if (albums.isEmpty()) return ResponseEntity("No albums found", HttpStatus.NOT_FOUND)
+            return ResponseEntity.ok(albums)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity("Invalid boolean value: $all", HttpStatus.BAD_REQUEST)
+        }
     }
 
     @Operation(summary = "Get  albums by id")
     @GetMapping(value = ["/{id}"])
     fun getAlbumById(@PathVariable(value = "id") id: String): ResponseEntity<Any> {
-        val albums = albumService.getAlbumById(id) ?: return ResponseEntity("No albums with Id $id", HttpStatus.NOT_FOUND)
+        val albums =
+            albumService.getAlbumById(id) ?: return ResponseEntity("No albums with Id $id", HttpStatus.NOT_FOUND)
         return ResponseEntity.ok(albums)
     }
 
@@ -45,7 +50,7 @@ class AlbumController {
     fun getAlbumsByUserId(@PathVariable userId: String): ResponseEntity<Any> {
         val albums = albumService.getAlbumsByUserId(userId)
         if (albums.isEmpty()) return ResponseEntity("No albums with User Id $userId", HttpStatus.NOT_FOUND)
-            return ResponseEntity.ok(albums)
+        return ResponseEntity.ok(albums)
     }
 
 }
