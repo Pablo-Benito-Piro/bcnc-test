@@ -8,33 +8,38 @@ La primera entrando dentro de la clase 'BcncTestApplication.kt' y en la clase se
 flecha Verde, lo pulsamos y nos saldrá un desplegable y seleccionamos la opción Run y el nombre de la clase.
 
 IMPORTANTE: no tener levantado nada en el puerto 8080 debido a que usa ese puerto para levantarse.
-![img_2.png](img_2.png)
+![imagen](https://github.com/user-attachments/assets/e2d30da4-ff79-4c03-9882-394754d9b441)
 
-![img_3.png](img_3.png)
+
+![imagen](https://github.com/user-attachments/assets/358db8b0-dd5b-4120-b6c3-a4b157e4ba05)
+
 
 La otra manera es crear una Run/Debug Configuration, si pinchamos en la flecha al lado del nombre nos saldrá un
 desplegable
 
-![img_4.png](img_4.png)
+![imagen](https://github.com/user-attachments/assets/4372f97a-b12e-49f7-a7a3-d254cb86efdf)
 
-![img_5.png](img_5.png)
+![imagen](https://github.com/user-attachments/assets/0bfcc8cb-1c39-48b3-bbdb-b0bd4613fb02)
 
 Desde ahí podremos elegir una configuración ya existente o crear una nueva para crear una seleccionaremos la marcada en
 azul
 
-![img_6.png](img_6.png)
+![imagen](https://github.com/user-attachments/assets/09e937f6-ed4d-454d-b006-4065996549d0)
+
 
 Seleccionaremos la opción Spring boot, se tendrá que rellenar los huecos como la imagen, en este creacion tambien se
 podrá  añadir perfiles como por ejemplo (local, develop) pero en este caso no es necesario.
 
-![img_4.png](img_4.png)
+![imagen](https://github.com/user-attachments/assets/4372f97a-b12e-49f7-a7a3-d254cb86efdf)
 
 Una vez creado, seleccionamos la flecha verde y se ejecutará, y en la consola se abrirá y saldrán estos mensajes
 
-![img_7.png](img_7.png)
+![imagen](https://github.com/user-attachments/assets/e7037a44-59f3-403e-a3d4-3aa1a256db30)
 
 Una vez levantado podremos lanzar peticiones a la api para ello podremos utilizar cualquier navegador o Postman un
 software que facilita la visualización de las respuestas y el lanzamiento de peticiones.
+
+![imagen](https://github.com/user-attachments/assets/19e9629a-6656-4856-98ec-adc21a6c7546)
 
 Actualmente, la Api tiene 3 endpoint para Photos:
 
@@ -89,4 +94,17 @@ endpoint con mismo método y diferentes parámetros se juntan en uno mismo, lo d
 # Test
 
 A la hora de ejecutar los test hay diferentes maneras puedes ejecutarlos test por test, clase por clase o todos a la vez.
+
+![imagen](https://github.com/user-attachments/assets/6f622873-cf43-4103-b6fc-e4e845146c39)
+
+Si seleccionamos la carpeta donde se encuentran todos los test y le damos a run se ejecutarán todos los test que haya dentro
+
+![imagen](https://github.com/user-attachments/assets/491e927d-8ea0-49a4-8f43-7f1b97f34e67)
+
+Si seleccionamos la clase que queremos ejecutar los test, podemos seleccionar  en la flecha verde al lado del nombre de la clase o en test correspondiente para ejecutarlo dando al run
+
+![imagen](https://github.com/user-attachments/assets/4c00b519-5014-483d-97ce-aee3a134a57e)
+
+
+
 
