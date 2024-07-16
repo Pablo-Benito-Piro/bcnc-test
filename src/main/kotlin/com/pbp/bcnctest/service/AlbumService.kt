@@ -1,62 +1,43 @@
 package com.pbp.bcnctest.service
 
 import com.pbp.bcnctest.models.Album
-import com.pbp.bcnctest.models.Photo
-import org.springframework.beans.factory.annotation.Value
+import com.pbp.bcnctest.repository.AlbumRepository
+import com.pbp.bcnctest.repository.PhotoRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
-import java.util.*
+
+
 
 @Service
-class AlbumService {
+class AlbumService(@Autowired val albumRepository: AlbumRepository, @Autowired val photoRepository: PhotoRepository) {
 
-    val restTemplate = RestTemplate()
 
-    @Value("\${json.placeholder.url.albums}")
-    lateinit var urlAlbum: String
-
-    @Value("\${json.placeholder.url.all.photos}")
-    lateinit var urlAlbumWithPhotos: String
 
     fun getAlbums(): List<Album> {
-        val albums = restTemplate.getForObject(urlAlbum, Array<Album>::class.java)
-        return albums?.toList() ?: Collections.emptyList()
+        val albums = albumRepository.getAllAlbums()
+        return albums
     }
 
     fun getAlbumsWithPhotos(all: Boolean): List<Album> {
-        try {
-            val albums = restTemplate.getForObject(urlAlbum, Array<Album>::class.java)
-            if (all) {
-                for (album in albums!!) {
-                    val albumWithPhotos = restTemplate.getForObject(
-                        urlAlbumWithPhotos + "?albumId=${album.id}",
-                        Array<Photo>::class.java
-                    )
-                    albumWithPhotos?.toList()?.also { album.photos = it }
-                }
-                return albums.toList()
-            }
-            return albums?.toList() ?: Collections.emptyList()
-        } catch (ex: MethodArgumentTypeMismatchException) {
-            return Collections.emptyList()
+        val albums = albumRepository.getAllAlbums()
+        if (!all) {
+            return albums.toList()
         }
+        val photos = photoRepository.getAllPhotos()
+        val photosByAlbumId = photos.groupBy { it.albumId }
+        albums.forEach { album ->
+            album.photos = photosByAlbumId[album.id] ?: emptyList()
+        }
+        return albums.toList()
     }
 
     fun getAlbumsByUserId(userId: String): List<Album> {
-        val albums = restTemplate.getForObject("$urlAlbum?userId=$userId", Array<Album>::class.java)
-        return albums?.toList() ?: Collections.emptyList()
+        val albums = albumRepository.getAlbumByUserId(userId)
+        return albums
     }
 
     fun getAlbumById(id: String): Album? {
-        try {
-            val album = restTemplate.getForObject("$urlAlbum/$id", Album::class.java)
-            return album
-
-        } catch (ex: HttpClientErrorException) {
-            return null
-        }
-
+        val album = albumRepository.getAlbumById(id)
+        return album
     }
 }

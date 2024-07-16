@@ -2,7 +2,7 @@ package com.pbp.bcnctest.controller
 
 
 import com.pbp.bcnctest.service.AlbumService
-import com.pbp.bcnctest.models.Album
+import feign.FeignException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,9 +20,8 @@ class AlbumController {
 
     @Operation(summary = "Get all albums")
     @GetMapping()
-    fun getAlbums(): List<Album> {
-        val albums = albumService.getAlbums()
-        return albums
+    fun getAlbums(): ResponseEntity<Any> {
+        return ResponseEntity.ok(albumService.getAlbums())
     }
 
     @Operation(summary = "Get all albums with photos")
@@ -40,9 +39,15 @@ class AlbumController {
     @Operation(summary = "Get  albums by id")
     @GetMapping(value = ["/{id}"])
     fun getAlbumById(@PathVariable(value = "id") id: String): ResponseEntity<Any> {
-        val albums =
-            albumService.getAlbumById(id) ?: return ResponseEntity("No albums with Id $id", HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(albums)
+        try {
+            val albums = albumService.getAlbumById(id) ?: return ResponseEntity(
+                "No album found with id: $id",
+                HttpStatus.NOT_FOUND
+            )
+            return ResponseEntity.ok(albums)
+        } catch (e: FeignException) {
+            return ResponseEntity("No albums with Id $id", HttpStatus.NOT_FOUND)
+        }
     }
 
     @Operation(summary = "Get album by user id")

@@ -1,45 +1,26 @@
 package com.pbp.bcnctest.service
 
 import com.pbp.bcnctest.models.Photo
-import org.springframework.beans.factory.annotation.Value
+import com.pbp.bcnctest.repository.PhotoRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
-import org.springframework.web.client.RestTemplate
-import java.util.*
+
 
 @Service
-class PhotoService {
-
-    val restTemplate = RestTemplate()
-
-    @Value("\${json.placeholder.url.photos}")
-    lateinit var urlphotos: String
+class PhotoService(@Autowired val photoRepository: PhotoRepository) {
 
     fun getPhotos(): List<Photo> {
-        val photos = restTemplate.getForObject(
-            urlphotos,
-            Array<Photo>::class.java
-        )
-        return photos?.toList() ?: Collections.emptyList()
+        val photos = photoRepository.getAllPhotos()
+        return photos
     }
 
     fun getPhotoByAlbum(albumId: String): List<Photo> {
-        val photos = restTemplate.getForObject(
-            "$urlphotos?albumId=$albumId",
-            Array<Photo>::class.java
-        )
-        return photos?.toList() ?: Collections.emptyList()
+        val photos = photoRepository.getPhotosByAlbumId(albumId)
+        return photos.toList()
     }
 
     fun getPhotoById(id: String): Photo? {
-        try {
-            val photo = restTemplate.getForObject(
-                "$urlphotos/$id",
-                Photo::class.java
-            )
-            return photo
-        } catch (ex: HttpClientErrorException) {
-            return null
-        }
+        val photos = photoRepository.getPhotoById(id)
+        return photos
     }
 }
