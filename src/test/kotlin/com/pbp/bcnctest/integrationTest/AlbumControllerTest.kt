@@ -4,8 +4,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.pbp.bcnctest.models.Album
 import com.pbp.bcnctest.models.Photo
 import com.pbp.bcnctest.repository.AlbumRepository
-import com.pbp.bcnctest.repository.PhotoRepository
+
 import com.pbp.bcnctest.service.AlbumService
+import feign.FeignException
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -37,6 +39,7 @@ class AlbumControllerTest {
 
     @MockBean
     private lateinit var albumRepository: AlbumRepository
+
     val mapper = jacksonObjectMapper()
 
     @Test
@@ -71,6 +74,11 @@ class AlbumControllerTest {
     }
 
     @Test
+    fun getAlbumWithPhotoStatus404WithIllegalArgumentException() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/album/all/aa")).andExpect(status().isBadRequest)
+    }
+
+    @Test
     fun getAlbumWithIdStatusSuccess() {
         Mockito.`when`(albumService.getAlbumById("1")).thenReturn(album)
 
@@ -84,6 +92,12 @@ class AlbumControllerTest {
 
     @Test
     fun getAlbumWithIdStatus404() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/album/aaa")).andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun getAlbumWithIdStatus404OAndFeignException() {
+        Mockito.`when`(albumService.getAlbumById("aaa")).thenThrow(FeignException::class.java)
         mockMvc.perform(MockMvcRequestBuilders.get("/album/aaa")).andExpect(status().isNotFound)
     }
 

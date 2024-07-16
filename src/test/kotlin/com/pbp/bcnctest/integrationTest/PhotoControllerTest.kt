@@ -5,9 +5,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.pbp.bcnctest.models.Photo
 import com.pbp.bcnctest.repository.PhotoRepository
 import com.pbp.bcnctest.service.PhotoService
+import feign.FeignException
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -63,6 +63,12 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun getPhotoWithIdStatus404() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/photo/aaa")).andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun getPhotoWithIdStatus404AndFeignException() {
+        Mockito.`when`(photoService.getPhotoById("aaa")).thenThrow(FeignException::class.java)
         mockMvc.perform(MockMvcRequestBuilders.get("/photo/aaa")).andExpect(status().isNotFound)
     }
 
