@@ -3,9 +3,11 @@ package com.pbp.bcnctest.integrationTest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.pbp.bcnctest.models.Photo
+import com.pbp.bcnctest.repository.PhotoRepository
 import com.pbp.bcnctest.service.PhotoService
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
+import org.mockito.Mock
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -27,6 +29,9 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @MockBean
     lateinit var photoService: PhotoService
+
+    @MockBean
+    lateinit var photoRepository: PhotoRepository
 
     val mapper = jacksonObjectMapper()
 
@@ -64,7 +69,7 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun getPhotoWithAlbumIdStatusSuccess() {
         Mockito.`when`(photoService.getPhotoByAlbum("1")).thenReturn(listOf(photo))
-
+        Mockito.`when`(photoRepository.getPhotosByAlbumId("1")).thenReturn(listOf(photo))
         val result =
             mockMvc.perform(MockMvcRequestBuilders.get("/photo/album/1")).andExpect(status().isOk).andExpect(
                 content().contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +82,6 @@ class PhotoControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun getPhotoWithAlbumIdStatus404() {
-
         mockMvc.perform(MockMvcRequestBuilders.get("/photo/album/aaa")).andExpect(status().isNotFound)
     }
 }
