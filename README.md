@@ -7,7 +7,7 @@ Para ejecutar el proyecto se puede hacer de diferentes maneras, explicaré 2:
 La primera entrando dentro de la clase 'BcncTestApplication.kt' y en la clase se encontrará el método main con una
 flecha Verde, lo pulsamos y nos saldrá un desplegable y seleccionamos la opción Run y el nombre de la clase.
 
-IMPORTANTE: no tener levantado nada en el puerto 8080 debido a que usa ese puerto para levantarse.
+IMPORTANTE: no tener levantado nada en el puerto 8080 debido a que usa ese puerto para levantarse y tener jre de java 17,
 ![imagen](https://github.com/user-attachments/assets/e2d30da4-ff79-4c03-9882-394754d9b441)
 
 
@@ -61,10 +61,9 @@ Devuelve todos los álbumes
 
 - http://localhost:8080/album
 
-Devuelve todos los álbumes con sus fotos correspondientes a cada álbum en caso de ser true, si es falso solo devuelve
-los álbumes
+Devuelve todos los álbumes con sus fotos correspondientes a cada álbum 
 
-- http://localhost:8080/album/all/true
+- http://localhost:8080/album/all
 
 Devuelve todos los álbumes con ID que pongas (en este caso Id 1)
 
@@ -75,9 +74,7 @@ Devuelve todos los álbumes del usuario con ID que pongas (en este caso Id 1)
 - http://localhost:8080/album/user/1
 
 Explicación:
-Aunque puede llegar a tardar la devolución de los datos, decidí crear el endpoint (http://localhost:8080/album/all/true)
-que recibe todos los álbumes con sus respectivas fotos
-por si se quiere hacer un listado, una paginación o recibir todos los datos para actualizar una posible base de datos
+Decidí hacer 2 endpoint (http://localhost:8080/album) y otro (http://localhost:8080/album/all) porque en caso de implementar un Front no tener la necesidad de cargas todos los álbumes con sus fotos en el caso de querer mostrar todos los álbumes para luego pulsar un álbum e ir al detalle, ya hacer una petición más liviana preguntando solo por sus fotos. 
 
 Al principio, los endpoint de Photo y Album pensaba dejarlas las rutas de la siguiente manera debido a que me parecía más
 adecuada y más coherente, pero debido a problemas con Swagger Open Api al crear la documentación por un error que si dos
@@ -87,7 +84,7 @@ endpoint con mismo método y diferentes parámetros se juntan en uno mismo, lo d
 - http://localhost:8080/photo/1
 - http://localhost:8080/photo?=albumId=1
 - http://localhost:8080/album
-- http://localhost:8080/album/true
+- http://localhost:8080/album/all
 - http://localhost:8080/album/1
 - http://localhost:8080/album?userId=1
 
