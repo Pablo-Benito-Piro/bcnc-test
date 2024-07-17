@@ -1,6 +1,7 @@
 package com.pbp.bcnctest.controller
 
 
+
 import com.pbp.bcnctest.service.AlbumService
 import feign.FeignException
 import io.swagger.v3.oas.annotations.Operation
@@ -25,15 +26,11 @@ class AlbumController {
     }
 
     @Operation(summary = "Get all albums with photos")
-    @GetMapping(value = ["/all/{all}"])
-    fun getAlbumsWithPhotos(@PathVariable all: String): ResponseEntity<Any> {
-        try {
-            val albums = albumService.getAlbumsWithPhotos(all.toBooleanStrict())
+    @GetMapping(value = ["/all"])
+    fun getAlbumsWithPhotos(): ResponseEntity<Any> {
+            val albums = albumService.getAlbumsWithPhotos()
             if (albums.isEmpty()) return ResponseEntity("No albums found", HttpStatus.NOT_FOUND)
             return ResponseEntity.ok(albums)
-        } catch (e: IllegalArgumentException) {
-            return ResponseEntity("Invalid boolean value: $all", HttpStatus.BAD_REQUEST)
-        }
     }
 
     @Operation(summary = "Get  albums by id")

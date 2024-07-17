@@ -18,11 +18,8 @@ class AlbumService(@Autowired val albumRepository: AlbumRepository, @Autowired v
         return albums
     }
 
-    fun getAlbumsWithPhotos(all: Boolean): List<Album> {
+    fun getAlbumsWithPhotos(): List<Album> {
         val albums = albumRepository.getAllAlbums()
-        if (!all) {
-            return albums.toList()
-        }
         val photos = photoRepository.getAllPhotos()
         val photosByAlbumId = photos.groupBy { it.albumId }
         albums.forEach { album ->

@@ -3,14 +3,12 @@ package com.pbp.bcnctest.unitTest
 import com.pbp.bcnctest.models.Album
 import com.pbp.bcnctest.models.Photo
 import com.pbp.bcnctest.repository.AlbumRepository
-import com.pbp.bcnctest.repository.PhotoRepository
 import com.pbp.bcnctest.service.AlbumService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.assertj.core.api.Assertions.assertThat
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.springframework.boot.test.mock.mockito.MockBean
 
@@ -40,19 +38,10 @@ class AlbumServiceTest {
     }
 
     @Test
-    fun whenGetAlbumWithPhotoTrue_thenReturnAlbumWithPhotos() {
+    fun whenGetAlbumWithPhoto_thenReturnAlbumWithPhotos() {
         Mockito.`when`(albumRepository.getAllAlbums()).thenReturn(listOf(albumWithPhotos))
         //when
-        val result = albumService.getAlbumsWithPhotos(true)
-        //then
-        assertThat(result[0]).isExactlyInstanceOf(Album::class.java)
-    }
-
-    @Test
-    fun whenGetAlbumWithPhotoFalse_thenReturnAlbumWithPhotos() {
-        Mockito.`when`(albumRepository.getAllAlbums()).thenReturn(listOf(album))
-        //when
-        val result = albumService.getAlbumsWithPhotos(false)
+        val result = albumService.getAlbumsWithPhotos()
         //then
         assertThat(result[0]).isExactlyInstanceOf(Album::class.java)
     }
